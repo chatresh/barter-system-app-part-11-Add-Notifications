@@ -42,33 +42,72 @@ export default class MyRecievedItems extends React.Component {
     this.MyRecievedItems();
   }
    
-  keyExtractor = ({item,index}) => index.toString() 
+  keyExtractor = (item, index) => index.toString()
 
-  renderItem =({i,item}) => {
-   <ListItem
-   key ={i}
-   title={this.item_name}
-   subtitle={this.item_status}
-   titleStyle={{color:"black",fontWeigth:"bold"}}
-   bottomDivider
-   />
-  }
+    renderItem = ({ item, i }) => {
+        return(
+            <ListItem
+                key={i}
+                title={item.item}
+                subtitle={item.item_status}
+                titleStyle={{color:"black", fontWeight:"bold"}}
+                rightElement={
+                   <TouchableOpacity style={styles.button}>
+                   <Text style={{color:'#ffff'}}>Recieved</Text>
+                   </TouchableOpacity>
+                }
+                bottomDivider
+            />
+        )
+    }
   render(){
       return(
-          <View>
-           {
-             this.state.Recieved_Items.length === 0
-             ?(
-                 <Text>List Of your RecievedItems</Text>
-             ) : (
-                 <FlatList
-                 data={this.state.Recieved_Items}
-                 renderItem={this.renderItem}
-                keyExtractor={this.keyExtractor}
-                 />
-             )
-           }
-          </View>
+         <View style={{flex:1}}>
+                <MyHeader title="Recieved Items" navigation={this.props.navigation}/>
+                <View style={{flex:1}}>
+                    {
+                        this.state.Recieved_Items.length === 0 ? 
+                        (
+                            <View style={styles.subContainer}>
+                                <Text style={{fontSize:20}}>List Of All Recieved Items</Text>
+                            </View>
+                        ) 
+                        :(
+                            <FlatList
+                                data={this.state.Recieved_Items}
+                                keyExtractor={this.keyExtractor}
+                                renderItem={this.renderItem}
+                            />
+                        )
+                    }
+                </View>
+            </View>
       )
   }
 }
+
+const styles = StyleSheet.create({
+    subContainer : {
+        flex:1, 
+        fontSize:20,
+        justifyContent:"center",
+        alignItems:"center"
+    },
+     button:{
+      width:"15%",
+      height:50,
+      justifyContent:'center',
+      alignItems:'center',
+      borderRadius:10,
+      backgroundColor:"#ff5722",
+      shadowColor: "#000",
+      shadowOffset: {
+         width: 0,
+         height: 8,
+      },
+      shadowOpacity: 0.44,
+      shadowRadius: 10.32,
+      elevation: 16,
+      marginTop:20
+      }
+})
